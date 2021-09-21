@@ -1,0 +1,92 @@
+
+
+> DAY 2 - FOREIGN KEYS AND SQL
+
+continuing day 1
+
+Drop →  DROP TABLE IF EXISTS <TABLE NAME> or  DROP DATABASE IF EXISTS <DATABASE NAME>
+# SELECT → SELECT * FROM <TABLE_NAME>;
+- WHERE
+
+    → SELECT * FROM COMPANY WHERE AGE ≥25 AND SALARY ≥65000;
+
+    → SELECT * FROM COMPANY WHERE AGE IS NOT NULL;
+
+    → SELECT * FROM COMAPNY WHERE NAME LIKE 'P%';
+
+    → SELECT * FROM COMPANY WHERE NAME LIKE 'P_UL';
+
+## Folder Operations
+
+1. SCHEMA → Create SCHEMA <SCHEMA_NAME>;
+- 2. Folder inside the SCHEMA
+
+    CREATE TABLE <schema_name . table_name> (
+
+    ID  INT NOT NULL,
+
+    NAME VARCHAR[20] NOT NULL,
+
+    AGE INT NOT NULL,
+
+    ADDRESS CHAR[25],
+
+    SALARY DECIMAL (18,2) ,
+
+    PRIMARY KEY (ID)
+
+    );
+
+1. DROP → DROP SCHEMA <SCHEMA_NAME> 
+2. DROP → DROP SCHEMA <SCHEMA_NAME> CASCADE → Force delete all folder and sub folder
+- 5. INSERT into TABLES
+
+    → INSERT INTO COMPANY (ID , NAME ,AGE , ADDRESS , SALARY , JOIN_DATE ) VALUES ('1' , 'PAUL' , 32 , CALIFORNUIA , 20000.00 , '2001-07-13');
+
+## TYPE CASTING
+
+⇒ SELECT * FROM COMAPNY WHERE SALARY  : : TEXT LIKE '200%' ;
+
+## BETWEEN  - IN - NOT IN
+
+⇒ SELECT * FROM COMPANY WHERE AGE BETWEEN 25 AND 27;
+
+⇒ SELECT * FROM COMPANY WHERE AGE IN (25,27);
+
+⇒ SELECT * FROM COMPANY WHERE AGE NOT IN (25,27);
+
+## UPDATE
+
+⇒ UPDATE COMPANY SET SALARY =15000 WHERE ID=3;
+
+⇒ UPDATE COMPANY SET ADDRESS='Texas' , SALARY = 20000 , WHERE ID=2;
+
+## DELETING A PARTICULAR ROW
+
+⇒ DELETE FROM COMPANY WHERE ID=2
+
+## Connecting Tables using FOREIGN KEYS
+
+⇒ Creating table 1
+
+```sql
+devs=# CREATE TABLE CUSTOMERS(
+devs(# customer_id INT GENERATED ALWAYS AS IDENTITY,
+devs(# customer_name VARCHAR(255) NOT NULL,
+devs(# PRIMARY KEY( customer_id) );
+```
+
+⇒ Creating table 2
+
+```sql
+devs=# CREATE TABLE CONTACTS(
+devs(# contact_id INT NOT NULL,
+devs(# customer_id INT,
+devs(# contact_name varchar(255) NOT NULL,
+devs(# phone varchar(15),
+devs(# email varchar(15),
+devs(# PRIMARY KEY(contact_id),
+devs(# CONSTRAINT fk_customer
+devs(# FOREIGN KEY(customer_id)
+devs(# REFERENCES customers(customer_id)
+devs(# ON DELETE CASCADE );

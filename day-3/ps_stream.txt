@@ -1,0 +1,71 @@
+
+PUB SUB OPERATIONS:-
+
+⇒ SUSCRIBE → SUBSCRIBE <CHANNEL_NAME>
+
+⇒ PUBLISH → PUBLISH <CHANNEL_NAME> <MESSAGE>
+
+⇒ PSUBSCRIBE → PSUBSCRIBE <LETTER*> → SUBSCRIBE TO EVERY CHANNEL THAT STARTS WITH THAT PARTICULAT LETTER
+
+⇒ UNSUBSCRIBE → UNSUBSCRIBE <CHANNEL_NAME>
+
+⇒ PUNSUBSCRIBE → PUNSUBSCRIBE <LETTER*> → UNSUBSCRIBE TO EVERY CHANNEL THAT STARTS WITH THAT PARTICULAT LETTER
+
+STREAM OPERATIONS
+
+> Creates a Streamline type of structure for multiple users to be handled simultaneously
+
+- XADD
+    - XADD mystream 10000 name Rohit
+
+        mystream → Stream name
+
+        10000 → key { should be unique }
+
+        name Rohit → key value pair 
+
+    - XADD mystream * name Rohit
+
+        Assigns an ID randomly - format is  TimeStamp-0
+
+    - XADD mystream MAXLEN 10000 * name devs
+
+        sets a limit { here 10000 } after which the entire dataset will reset and new data will act as the first data , this helps in limiting the size of data stored and avoid crashing due to overload
+
+- XREAD
+    - XREAD COUNT 200 STREAMS mystream 0
+
+        basically reads the desired no of values starting from 0 { here 200 rows will be fetched }
+
+    - XREAD COUNT 200 STREAMS mystream  100002-0
+
+        Reads the values { Here 200 values } after the desired  specified id 
+
+    - XREAD BLOCK  10000 STREAMS mystream 0
+
+        closes the stream if no message is received after 10 sec  , it will automatically disconnect the user.
+
+        To make the connection permanent , write 0 in place of time specifies ( 10000 → 0 )
+
+    - XREAD BLOCK 10000 STREAMS mystream $
+
+        gives a kind of PUB/SUB feature by making the connection active for 10 sec , otherwise it will disconnect.
+
+        If it receives the data , it will display the data and close the connection.
+
+    - XRANGE
+        - XRANGE mystream <startID-0> <EndingID-0>
+
+            Acts like a loop and returns the data within the given Start Id and End ID
+
+        - XRANGE mystream <startID-0> <EndingID-0> COUNT 10
+
+            Acts like a loop and returns the data within the given Start Id and End ID and returns the first 10 vaues from the start
+
+        - XRANGE mystream - + COUNT 10
+
+            Brings 10 values from the very beginning to the very last (basically upper bound)
+
+        - XREVRANGE mystream + - COUNT 10
+
+            Brings 10 values from the very last to the beginning (basically Lower bound)
